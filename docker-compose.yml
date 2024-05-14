@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile-app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=localhost
+      - DB_USER=user_aeroporto
+      - DB_PASSWORD=senha_aeroporto
+      - DB_NAME=aeroporto
+  db:
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: senha_aeroporto
+      MYSQL_DATABASE: aeroporto
+      MYSQL_USER: user_aeroporto
+      MYSQL_PASSWORD: senha_aeroporto
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
