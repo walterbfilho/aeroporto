@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 services:
   aeroporto_FCCPD:
     image: bitnami/postgresql
@@ -8,5 +8,14 @@ services:
       - POSTGRESQL_USERNAME=docker
       - POSTGRESQL_PASSWORD=aeroporto123
       - POSTGRES_DATABASE=aeroporto
+      
+  aeroporto_app:
+    build: .
+    ports:
+      - 8000:8000
+    environment:
+      - DATABASE_URL=postgresql://docker:aeroporto123@aeroporto_FCCPD:5432/aeroporto
+    depends_on:
+      - aeroporto_FCCPD
 
 #docker run --name aeroporto_FCCPD -e POSTGRESQL_USERNAME=docker -e POSTGRESQL_PASSWORD=aeroporto123 -e POSTGRES_DATABASE=aeroporto -p 5432:5432 bitnami/postgresql:latest
