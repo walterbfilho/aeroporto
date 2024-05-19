@@ -1,21 +1,15 @@
-version: "3.8"
 services:
-  aeroporto_db:
-    image: bitnami/postgresql
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRESQL_USERNAME=docker
-      - POSTGRESQL_PASSWORD=aeroporto123
-      - POSTGRES_DATABASE=aeroporto
-
-  aeroporto_app:
-    build: .
-    ports:
-      - 8000:8000
-    environment:
-      - DATABASE_URL=postgresql://docker:aeroporto123@aeroporto_db:5432/aeroporto
+  pythonapp:
+    build: ./python/
+    command: sh -c "sleep 10s ; python3 ./main.py"
     depends_on:
-      - aeroporto_db
+      - mysql
 
-#docker run --name aeroporto_FCCPD -e POSTGRESQL_USERNAME=docker -e POSTGRESQL_PASSWORD=aeroporto123 -e POSTGRES_DATABASE=aeroporto -p 5432:5432 bitnami/postgresql:latest
+  mysql:
+    build: ./mysql/
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - '3306:3306'
