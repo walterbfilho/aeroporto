@@ -1,15 +1,38 @@
-services:
-  pythonapp:
-    build: ./python/
-    command: sh -c "sleep 10s ; python3 ./main.py"
-    depends_on:
-      - mysql
+version: '3.8'
 
-  mysql:
-    build: ./mysql/
-    restart: always
+services:
+  db:
+    image: postgres:latest
     environment:
-      MYSQL_DATABASE: 'db'
-      MYSQL_ROOT_PASSWORD: 'root'
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mtofoda
+      POSTGRES_DB: postgres
     ports:
-      - '3306:3306'
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./postgree/db_aeroporto.sql:/docker-entrypoint-initdb.d/db_aeroporto.sql
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: ./python
+      dockerfile: Dockerfile
+    command: streamlit run main.py
+    volumes:
+      - ./python:/app
+    ports:
+      - "8501:8501"
+    environment:
+      - DATABASE_URL=postgres://postgres:mtofoda@db:5432/postgres
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+volumes:
+  postgres-data:
+
+networks:
+  app-network:

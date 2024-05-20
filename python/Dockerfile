@@ -1,16 +1,20 @@
+# Use a imagem oficial do Python como base
 FROM python:3.9
 
-COPY requirements.txt ./
+# Defina o diretório de trabalho dentro do container
+WORKDIR /app
 
-WORKDIR /usr/app/src
+# Copie o arquivo requirements.txt para o diretório de trabalho
+COPY requirements.txt .
 
-RUN pip install -r ./requirements.txt
+# Instale as dependências listadas no requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# 
-#RUN pip install streamlit
-#RUN pip install pandas
-#RUN pip install mysql-connector-python
+# Copie todo o conteúdo do diretório atual para o diretório de trabalho no container
+COPY . .
 
-COPY main.py ./
+# Exponha a porta que a aplicação Streamlit usará
+EXPOSE 8501
 
-CMD ["python", "main.py"]
+# Comando para rodar a aplicação
+CMD ["streamlit", "run", "main.py"]
