@@ -1,4 +1,7 @@
 -- Criação das tabelas
+CREATE DATABASE db;
+
+USE db;
 
 CREATE TABLE IF NOT EXISTS aviao (
     id SERIAL PRIMARY KEY,

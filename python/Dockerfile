@@ -1,20 +1,21 @@
-# Use a imagem oficial do Python como base
 FROM python:3.9
 
-# Defina o diretório de trabalho dentro do container
 WORKDIR /app
 
-# Copie o arquivo requirements.txt para o diretório de trabalho
+# Copiar o arquivo requirements.txt para o diretório de trabalho
 COPY requirements.txt .
 
-# Instale as dependências listadas no requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Atualizar o pip para a versão mais recente
+RUN pip install --upgrade pip
 
-# Copie todo o conteúdo do diretório atual para o diretório de trabalho no container
+# Configurar um espelho de pacotes
+RUN pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/
+
+# Instalar as dependências com timeout e retry
+RUN pip install --default-timeout=100 --retries=10 --no-cache-dir -r requirements.txt
+
+# Copiar o restante do código para o diretório de trabalho
 COPY . .
 
-# Exponha a porta que a aplicação Streamlit usará
-EXPOSE 8501
-
-# Comando para rodar a aplicação
+# Comando para iniciar o aplicativo
 CMD ["streamlit", "run", "main.py"]
