@@ -6,4 +6,8 @@ RUN pip install -r requirements.txt
 
 WORKDIR /usr/app/src
 
-COPY streamlit run main.py ./
+#COPY streamlit run main.py ./
+COPY . .
+
+# Command to run the streamlit app
+CMD ["streamlit", "run", "main.py"]
