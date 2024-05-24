@@ -146,23 +146,40 @@ elif operation == "Atualizar":
             update_data(table, "fk_passageiro_cpf", novo_fk_passageiro_cpf, "fk_voo_id", fk_voo_id)
 
 # Read
+# Read
 elif operation == 'Read':
-    query = f"SELECT * FROM {table}"
-    data = select_data(query)
-    st.write(f"Dados da tabela {table}:")
     if table == "aviao":
+        query = f"SELECT * FROM {table}"
+        data = select_data(query)
+        st.write(f"Dados da tabela {table}:")    
         df = pd.DataFrame(data, columns=["ID", "Modelo"])
     elif table == "passageiro":
+        query = f"SELECT * FROM {table}"
+        data = select_data(query)
+        st.write(f"Dados da tabela {table}:")
         df = pd.DataFrame(data, columns=["CPF", "Nome"])
     elif table == "funcionario":
+        query = f"SELECT * FROM {table}"
+        data = select_data(query)
+        st.write(f"Dados da tabela {table}:")    
         df = pd.DataFrame(data, columns=["CPF", "Nome", "Cargo", "ID do Avião"])
     elif table == "destinos":
+        query = f"SELECT * FROM {table}"
+        data = select_data(query)
+        st.write(f"Dados da tabela {table}:")
         df = pd.DataFrame(data, columns=["ID", "Local"])
     elif table == "voo":
-        df = pd.DataFrame(data, columns=["ID", "ID do Destino", "ID do Avião"])
+        query = f"SELECT voo.id, destinos.local, aviao.modelo  FROM voo INNER JOIN aviao ON voo.fk_aviao_id = aviao.id INNER JOIN destinos ON voo.fk_destinos_id = destinos.id"
+        data = select_data(query)
+        st.write(f"Dados da tabela {table}:")    
+        df = pd.DataFrame(data, columns=["ID", "Nome do Destino", "Modelo do Avião"])
     elif table == "reserva":
+        query = f"SELECT * FROM {table}"
+        data = select_data(query)
+        st.write(f"Dados da tabela {table}:")
         df = pd.DataFrame(data, columns=["ID do Voo", "CPF do Passageiro"])
     st.dataframe(df, width=800)
+
 
 cursor.close()
 conn.close()
