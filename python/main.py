@@ -73,7 +73,9 @@ def update_data(table, set_column, set_value, condition_column, condition_value)
 # Interface
 st.title("Operações no Banco de Dados")
 operation = st.sidebar.selectbox("Selecione a operação", ("Inserir", "Deletar", "Atualizar", "Read", "Join Operation"))
-table = st.sidebar.selectbox("Selecione a tabela", ("aviao", "passageiro", "funcionario", "destinos", "voo", "reserva"))
+
+if operation != "Join Operation":
+    table = st.sidebar.selectbox("Selecione a tabela", ("aviao", "passageiro", "funcionario", "destinos", "voo", "reserva"))
 
 # Inserir
 if operation == "Inserir":
