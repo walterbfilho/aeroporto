@@ -219,7 +219,7 @@ elif operation == 'Read':
 
 # Join Operation
 elif operation == "Join Operation":
-    join_option = st.selectbox("Escolha o tipo de join", ["voo_aviao"])
+    join_option = st.selectbox("Escolha o tipo de join", ["voo_aviao","reserva_passageiro_voo"])
     if join_option == "voo_aviao":
         query = """
         SELECT voo.id AS VooID, destinos.local AS Destino, aviao.modelo AS AviaoModelo
@@ -230,3 +230,23 @@ elif operation == "Join Operation":
         data = select_data(query)
         df = pd.DataFrame(data, columns=["VooID", "Destino", "AviaoModelo"])
         st.dataframe(df, width=800)
+    elif join_option == "reserva_passageiro_voo":
+            query = """
+            SELECT 
+                reserva.fk_voo_id AS VooID, 
+                voo.fk_destinos_id AS DestinoID, 
+                destinos.local AS Destino, 
+                reserva.fk_passageiro_cpf AS PassageiroCPF, 
+                passageiro.nome AS PassageiroNome
+            FROM 
+                reserva
+            JOIN 
+                voo ON reserva.fk_voo_id = voo.id
+            JOIN 
+                destinos ON voo.fk_destinos_id = destinos.id
+            JOIN 
+                passageiro ON reserva.fk_passageiro_cpf = passageiro.cpf;
+            """
+            data = select_data(query)
+            df = pd.DataFrame(data, columns=["VooID", "DestinoID", "Destino", "PassageiroCPF", "PassageiroNome"])
+            st.dataframe(df, width=800)
