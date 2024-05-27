@@ -71,7 +71,7 @@ def update_data(table, set_column, set_value, condition_column, condition_value)
     st.success(f'Dados atualizados em {table}.')
 
 # Interface
-st.title("Operações no Banco de Dados")
+st.title("Aeroporto do Julio Cesar")
 operation = st.sidebar.selectbox("Selecione a operação", ("Inserir", "Deletar", "Atualizar", "Read", "Join Operation"))
 
 if operation != "Join Operation":
@@ -202,14 +202,14 @@ elif operation == 'Read':
 
     elif table == "voo":
         query = """
-        SELECT voo.id AS VooID, destinos.local AS Destino, aviao.modelo AS AviaoModelo
+        SELECT voo.id AS VooID,voo.fk_destinos_id as 'id de destino', destinos.local AS Destino, voo.fk_aviao_id as 'id do aviao', aviao.modelo AS AviaoModelo
         FROM voo
         JOIN destinos ON voo.fk_destinos_id = destinos.id
         JOIN aviao ON voo.fk_aviao_id = aviao.id
         """
         data = select_data(query)
         st.write(f"Dados da tabela {table}:")
-        df = pd.DataFrame(data, columns=["VooID", "Destino", "AviaoModelo"])
+        df = pd.DataFrame(data, columns=["VooID","id de destino", "Destino","id do aviao", "AviaoModelo"])
     elif table == "reserva":
         query = f"SELECT * FROM {table}"
         data = select_data(query)
