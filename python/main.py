@@ -72,7 +72,7 @@ def update_data(table, set_column, set_value, condition_column, condition_value)
 
 # Interface
 st.title("Aeroporto do Julio Cesar")
-operation = st.sidebar.selectbox("Selecione a operação", ("Inserir", "Deletar", "Atualizar", "Read", "Join Operation"))
+operation = st.sidebar.selectbox("Selecione a operação", ("Inserir", "Deletar", "Atualizar","Ler", "Join Operation"))
 
 if operation != "Join Operation":
     table = st.sidebar.selectbox("Selecione a tabela", ("aviao", "passageiro", "funcionario", "destinos", "voo", "reserva"))
@@ -178,7 +178,7 @@ elif operation == "Atualizar":
             update_data(table, "fk_passageiro_cpf", novo_fk_passageiro_cpf, "fk_voo_id", fk_voo_id)
 
 # Read
-elif operation == 'Read':
+elif operation == 'Ler':
     if table == "aviao":
         query = f"SELECT * FROM {table}"
         data = select_data(query)
